@@ -203,20 +203,41 @@ CREATE TABLE formula_presets (
   - Offline operation support
   - Multi-language support
 - **Project Structure**:
-  - `auth/`: Authentication related fragments and activities
-  - `main/`: Main application fragments and activities
-  - `device/`: Device communication and management
-  - `preparation/`: Formula preparation workflow
-  - `health/`: Health tracking and analytics
-  - `models/`: Data models and entities
-  - `utils/`: Utility classes and helpers
-  - `services/`: Background services
-  - `database/`: Local database and caching
-- **Testing**:
-  - JUnit for unit tests
-  - Espresso for UI tests
-  - Robolectric for Android framework tests
-  - Mockito for mocking dependencies
+```
+app/
+├── src/
+│   ├── main/
+│   │   ├── java/com/example/smima/
+│   │   │   ├── auth/           # Authentication components
+│   │   │   │   ├── AuthActivity.java
+│   │   │   │   ├── AuthPagerAdapter.java
+│   │   │   │   ├── LoginFragment.java
+│   │   │   │   └── SignupFragment.java
+│   │   │   ├── home/           # Home screen components
+│   │   │   │   ├── HomeFragment.java
+│   │   │   │   └── RecentActivityAdapter.java
+│   │   │   ├── preparation/    # Formula preparation
+│   │   │   │   └── PreparationFragment.java
+│   │   │   ├── health/         # Health tracking
+│   │   │   │   ├── HealthFragment.java
+│   │   │   │   └── HealthLogActivity.java
+│   │   │   ├── device/         # Device management
+│   │   │   │   ├── DeviceFragment.java
+│   │   │   │   └── AddDeviceActivity.java
+│   │   │   ├── settings/       # App settings
+│   │   │   │   └── SettingsActivity.java
+│   │   │   ├── MainActivity.java
+│   │   │   └── SplashActivity.java
+│   │   ├── res/
+│   │   │   ├── drawable/       # Icons and images
+│   │   │   ├── layout/         # UI layouts
+│   │   │   ├── menu/          # Menu definitions
+│   │   │   ├── values/        # Resources (strings, colors, etc.)
+│   │   │   └── xml/           # Other XML resources
+│   │   └── AndroidManifest.xml
+│   └── test/                  # Unit tests
+└── build.gradle              # App-level build config
+```
 
 ### iOS Implementation
 - **Language**: Swift
