@@ -66,4 +66,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_preparation">Preparation</string>
+    <string name="menu_health">Health</string>
+    <string name="menu_devices">Devices</string>
 </resources>

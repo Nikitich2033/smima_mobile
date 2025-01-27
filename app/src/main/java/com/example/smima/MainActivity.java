@@ -10,22 +10,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
+import com.example.smima.home.HomeFragment;
+import com.example.smima.preparation.PreparationFragment;
+import com.example.smima.health.HealthFragment;
+import com.example.smima.device.DeviceFragment;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    // UI Components
-    private TextInputEditText temperatureInput;
-    private TextInputEditText volumeInput;
-    private TextInputEditText timeInput;
-    private TextView waterLevelStatus;
-    private TextView wifiStatus;
-    private TextView bottleStatus;
-    private MaterialButton scanBarcodeButton;
-    private MaterialButton manualInputButton;
-    private MaterialButton startPreparationButton;
+    private BottomNavigationView bottomNavigationView;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
             setupToolbar();
             initializeViews();
-            setupClickListeners();
-            updateDeviceStatus();
+            setupNavigation();
+            
+            // Start with home fragment
+            if (savedInstanceState == null) {
+                loadFragment(new HomeFragment());
+            }
 
         } catch (Exception e) {
             Log.e(TAG, "Error in onCreate", e);
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             if (toolbar != null) {
                 setSupportActionBar(toolbar);
                 if (getSupportActionBar() != null) {
-                    getSupportActionBar().setTitle("Smima Home");
+                    getSupportActionBar().setTitle(R.string.app_name);
                 }
             } else {
                 Log.e(TAG, "Toolbar not found in layout");
@@ -62,66 +65,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        temperatureInput = findViewById(R.id.temperatureInput);
-        volumeInput = findViewById(R.id.volumeInput);
-        timeInput = findViewById(R.id.timeInput);
-        waterLevelStatus = findViewById(R.id.waterLevelStatus);
-        wifiStatus = findViewById(R.id.wifiStatus);
-        bottleStatus = findViewById(R.id.bottleStatus);
-        scanBarcodeButton = findViewById(R.id.scanBarcodeButton);
-        manualInputButton = findViewById(R.id.manualInputButton);
-        startPreparationButton = findViewById(R.id.startPreparationButton);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        fragmentManager = getSupportFragmentManager();
     }
 
-    private void setupClickListeners() {
-        scanBarcodeButton.setOnClickListener(v -> handleScanBarcode());
-        manualInputButton.setOnClickListener(v -> handleManualInput());
-        startPreparationButton.setOnClickListener(v -> handleStartPreparation());
+    private void setupNavigation() {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment fragment;
+            int itemId = item.getItemId();
+            
+            if (itemId == R.id.nav_home) {
+                fragment = new HomeFragment();
+            } else if (itemId == R.id.nav_preparation) {
+                fragment = new PreparationFragment();
+            } else if (itemId == R.id.nav_health) {
+                fragment = new HealthFragment();
+            } else if (itemId == R.id.nav_devices) {
+                fragment = new DeviceFragment();
+            } else {
+                return false;
+            }
+
+            return loadFragment(fragment);
+        });
     }
 
-    private void handleScanBarcode() {
-        // TODO: Implement barcode scanning
-        Toast.makeText(this, "Barcode scanning coming soon", Toast.LENGTH_SHORT).show();
-    }
-
-    private void handleManualInput() {
-        // TODO: Show manual input dialog
-        Toast.makeText(this, "Manual input coming soon", Toast.LENGTH_SHORT).show();
-    }
-
-    private void handleStartPreparation() {
-        String temperature = temperatureInput.getText().toString();
-        String volume = volumeInput.getText().toString();
-        String time = timeInput.getText().toString();
-
-        if (temperature.isEmpty() || volume.isEmpty() || time.isEmpty()) {
-            Toast.makeText(this, "Please fill in all preparation settings", Toast.LENGTH_SHORT).show();
-            return;
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
         }
-
-        // TODO: Implement actual preparation start
-        String message = String.format("Starting preparation: %s°C, %sml, %s", temperature, volume, time);
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    private void updateDeviceStatus() {
-        // TODO: Implement actual device status checking
-        waterLevelStatus.setText(getString(R.string.water_level) + ": " + getString(R.string.status_ok));
-        wifiStatus.setText(getString(R.string.wifi_signal) + ": " + getString(R.string.status_connected));
-        bottleStatus.setText(getString(R.string.bottle_present) + ": " + getString(R.string.status_yes));
+        return false;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            // TODO: Navigate to settings activity
-            Toast.makeText(this, "Settings coming soon", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -130,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateDeviceStatus();
         Log.d(TAG, "MainActivity resumed");
     }
 }
