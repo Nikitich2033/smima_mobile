@@ -1,133 +1,119 @@
 # Smima Mobile
 
+A native Android mobile application for smart milk maker device control and monitoring.
 
-# React Native App Plan 
+## Prerequisites
 
-## Dependencies
+- Android Studio (latest version)
+- JDK 8 or newer
+- Android SDK with minimum API level 24 (Android 7.0)
+- Android device or emulator running Android 7.0 or newer
 
-- React Navigation (for navigation between screens)
-- Redux or Context API (for state management)
-- Firebase/Backend API (for authentication and data storage)
-- Axios (for API calls)
-- Native Modules (for Wi-Fi connection and device integration)
+## Setup Instructions
 
-## Folder Structure:
-
-```
-src/
-  components/ (Reusable components)
-  screens/ (All screen components)
-  navigation/ (React Navigation configuration)
-  redux/ (State management files)
-  utils/ (Helper functions)
-  assets/ (Images and fonts)
+1. Clone the repository:
+```bash
+git clone [repository-url]
 ```
 
-## Main Screens and Functionalities
+2. Open the project in Android Studio:
+- Launch Android Studio
+- Select "Open an existing project"
+- Navigate to the project directory and click "OK"
 
-1. **SplashScreen.js**
+3. Let Android Studio sync the project with Gradle files
 
-   - Displays the company logo during app load.
-2. **AuthScreen.js**
+4. Run the app:
+- Select your target device (emulator or connected physical device)
+- Click the "Run" button or press Shift + F10
 
-   - Options for "Log In" and "Sign Up".
-   - **Log In:**
-     - Fields: Email, Password.
-     - Button: "Log In", Link: "Forgot Password".
-   - **Sign Up:**
-     - Fields: First Name, Last Name, Phone (optional), Country, Email, Confirm Email, Password.
-     - Checkbox for Terms of Service.
-     - Button: "Continue".
-3. **AddDeviceScreen.js**
+## Project Structure
 
-   - Step 1: Select Wi-Fi network.
-   - Step 2: Device connection process screen with progress indication.
-   - Step 3: Completion screen with options to name the device and set it as default.
-   - Button: "Confirm".
-4. **MainScreen.js (Home Screen)**
-
-   - Inputs for:
-     - Milk powder details (scan barcode or manual input).
-     - Water temperature and mixture volume (auto-set based on powder details).
-     - Time for preparation.
-   - Button: "Start Preparation".
-5. **SettingsScreen.js**
-
-   - Displays:
-     - Water level, temperature, and milk powder quantity.
-     - Device status (Wi-Fi signal, child lock, presence of bottle, scale buildup).
-   - Button: "Run Self-Diagnostics" (checks device parameters).
-6. **HealthLogScreen.js**
-
-   - Allows entry of:
-     - Child's name and birth date (supports multiple children).
-     - Feeding details (time, volume, weight, body temperature, stool status).
-   - Automatically logs feeding times based on timers.
-
-## Navigation
-
-- **Stack Navigator:**
-  - SplashScreen -> AuthScreen -> Main App
-- **Bottom Tab Navigator (inside Main App):**
-  - MainScreen, AddDeviceScreen, SettingsScreen, HealthLogScreen
-
-## Redux State Structure (Example):
-
-```json
-{
-  "user": {
-    "id": "string",
-    "name": "string",
-    "email": "string"
-  },
-  "devices": [
-    {
-      "id": "string",
-      "name": "string",
-      "default": "boolean",
-      "status": {
-        "waterLevel": "number",
-        "temperature": "number",
-        "milkQuantity": "number",
-        "wifiSignal": "boolean",
-        "childLock": "boolean",
-        "bottlePresent": "boolean",
-        "scaleBuildup": "boolean"
-      }
-    }
-  ],
-  "healthLogs": {
-    "[childId]": [
-      {
-        "date": "string",
-        "volume": "number",
-        "weight": "number",
-        "bodyTemp": "number",
-        "stoolStatus": "string"
-      }
-    ]
-  }
-}
+```
+app/
+  src/
+    main/
+      java/com/example/smima/
+        auth/           # Authentication related classes
+        device/         # Device connection and control
+        health/         # Health logging functionality
+        settings/       # App and device settings
+        MainActivity.java
+        SplashActivity.java
+      res/
+        layout/        # XML layout files
+        values/        # Resources (strings, colors, etc.)
+        drawable/      # Images and icons
 ```
 
-## Example Code for Screens
+## Main Features
 
-### SplashScreen.js
+1. **Authentication**
+   - Login with email and password
+   - User registration
+   - Password recovery
 
-```javascript
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+2. **Device Management**
+   - Wi-Fi device connection
+   - Device status monitoring
+   - Multiple device support
 
-const SplashScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.logo}>Company Logo</Text>
-  </View>
-);
+3. **Main Functionality**
+   - Milk powder scanning (barcode)
+   - Water temperature control
+   - Mixture volume settings
+   - Preparation timing
 
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
-  logo: { fontSize: 32, fontWeight: 'bold' },
-});
+4. **Settings**
+   - Water level monitoring
+   - Temperature control
+   - Device maintenance
+   - Child lock settings
 
-export default SplashScreen;
-```
+5. **Health Logging**
+   - Multiple children profiles
+   - Feeding schedule tracking
+   - Growth monitoring
+   - Health status logging
+
+## Technical Implementation
+
+### Activities
+- `SplashActivity`: App entry point with logo display
+- `AuthActivity`: Handles login and registration with ViewPager2
+- `MainActivity`: Main app interface with bottom navigation
+- `AddDeviceActivity`: Wi-Fi device setup wizard
+- `SettingsActivity`: App and device configuration
+- `HealthLogActivity`: Child health monitoring
+
+### Key Components
+- Material Design components for UI
+- ViewPager2 for auth screen navigation
+- ConstraintLayout for responsive layouts
+- Room Database for local storage
+- Retrofit for API communication
+- ZXing for barcode scanning
+
+### Data Architecture
+- MVVM (Model-View-ViewModel) pattern
+- LiveData for reactive UI updates
+- Repository pattern for data management
+- SharedPreferences for app settings
+
+### Security
+- Encrypted local storage
+- Secure API communication
+- OAuth2 authentication
+- Device verification
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+[Add your license information here]
